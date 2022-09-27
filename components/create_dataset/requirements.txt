@@ -1,0 +1,9 @@
+fire==0.4.0
+joblib==1.2.0; python_version >= "3.8"
+numpy==1.23.3; python_version >= "3.8"
+pillow==9.2.0; python_version >= "3.7"
+scikit-learn==1.1.2; python_version >= "3.8"
+scipy==1.9.1; python_version >= "3.8" and python_version < "3.12"
+six==1.16.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
+termcolor==2.0.1; python_version >= "3.7"
+threadpoolctl==3.1.0; python_version >= "3.8"
