@@ -1,4 +1,4 @@
-# Creat Dataset
+# Create Dataset
 
 ## Overview
 
@@ -8,7 +8,9 @@
 
 ## Requierement
 
+- MacOS Monterey
 - python >= 3.10
+- no GPU
 - poetry >= 1.1
 
 ## Setup
@@ -34,7 +36,7 @@
     　--label_filepath /hoge/label/train/train.json　\
     　--image_dirpath /hoge/images/train/ \
     　--output_dirpath /hoge/yolo_dataset/ \
-    　--test_size 0.1
+    　--val_size 0.1
   ```
 
   | #    | 引数               | 説明                             | データ型 | 必須                |
@@ -42,30 +44,32 @@
   | 1    | `--label_filepath` | 変換前ラベルjsonファイルパス     | str      | ○                   |
   | 2    | `--image_dir`      | 画像ディレクトリパス             | str      | ○                   |
   | 3    | `--output_dirpath` | 出力データセットディレクトリパス | str      | ○                   |
-  | 4    | `--test_size`      | validataionデータセット割合      | float    | ☓（デフォルト:0.1） |
+  | 4    | `--val_size`      | validataionデータセット割合      | float    | ☓（デフォルト:0.1） |
 
   
 
 - `output_dir`ディレクトリ構成
+  - `train`: 学習データセット
+  - `val`: 検証データセット
 
-  ```
-  output_dir
-  ├── train
-  │   ├── images
-  │   │   ├── train_xx.tif
-  │   │   ├── train_yy.tif
-  │   │   ...
-  │   └── labels
-  │       ├── train_xx.txt
-  │       ├── train_yy.txt
-  │       ...
-  ├── val
-  │   ├── images
-  │   │   ├── train_zz.tif
-  │   │   ├── train_ii.tif
-  │   │   ...
-  │   └── labels
-  │       ├── train_zz.txt
-  │       ├── train_ii.txt
-  │       ...
+  ```shell
+  └──output_dir
+     ├── train
+     │   ├── images
+     │   │   ├── train_xx.tif
+     │   │   ├── train_yy.tif
+     │   │   ...
+     │   └── labels
+     │       ├── train_xx.txt
+     │       ├── train_yy.txt
+     │       ...
+     └─── val
+         ├── images
+         │   ├── train_zz.tif
+         │   ├── train_ii.tif
+         │   ...
+         └── labels
+             ├── train_zz.txt
+             ├── train_ii.txt
+             ...
   ```

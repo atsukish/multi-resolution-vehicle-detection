@@ -53,19 +53,20 @@ def to_yolo_format(
 
 
 def split_dataset(
-    yolo_labels: list[YoloLabel], test_size: float = 0.1
+    yolo_labels: list[YoloLabel], val_size: float = 0.1
 ) -> tuple[list[YoloLabel], list[YoloLabel]]:
     """データセット分割
 
     Args:
         yolo_labels (list[YoloLabel]): データセット
+        val_size (float): validationデータセット割合（デフォルト: 0.1）
 
     Returns:
         tuple[list[YoloLabel], list[YoloLabel]]: train/valラベルデータセット
     """
     train, val = train_test_split(
         yolo_labels,
-        test_size=test_size,
+        test_size=val_size,
         shuffle=True,
         random_state=RANDOM_SEED,
     )
@@ -111,7 +112,7 @@ def main(
     label_filepath: str,
     image_dirpath: str,
     output_dirpath: str,
-    test_size: float = 0.1,
+    val_size: float = 0.1,
 ) -> None:
     """メイン
 
@@ -119,7 +120,7 @@ def main(
         label_filepath (str): アノテーションjsonファイルパス
         image_dirpath (str): 画像ファイルパス
         yolo_dirpath (str): 出力yoloディレクトリパス
-        test_size (float): テストデータ割合（デフォルト:0.1）
+        val_size (float): テストデータ割合（デフォルト:0.1）
 
     Raises:
         FileNotFoundError: _description_
@@ -139,7 +140,7 @@ def main(
     yolo_data = to_yolo_format(json_data, Path(image_dirpath))
 
     # データセット分割
-    train, val = split_dataset(yolo_data, test_size)
+    train, val = split_dataset(yolo_data, val_size)
 
     # データセット出力
     output_dataset(
