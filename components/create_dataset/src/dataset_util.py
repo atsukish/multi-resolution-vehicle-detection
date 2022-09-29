@@ -1,5 +1,7 @@
 """dataset utils"""
 from pathlib import Path
+from typing import List
+
 from PIL import Image
 
 from src.ann_fmt import Label, Object, load_annotation_json, CompeDataset
