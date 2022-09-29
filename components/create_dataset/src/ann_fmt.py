@@ -175,3 +175,27 @@ def save_annotation_json(label_data: list[Label], filepath: Path) -> None:
     with filepath.open(mode="w", encoding="utf-8") as f:
         json_data = {"images": images}
         json.dump(json_data, f)
+
+
+def score_fileter(
+    dataset: CompeDataset, score_thres: float = 0.25
+) -> CompeDataset:
+    """スコアフィルタリング
+
+    Args:
+        dataset (CompeDataset): フィルタ前データセット
+        score_thres (float, optional): スコアしきい値. Defaults to 0.25.
+
+    Returns:
+        CompeDataset: フィルタリング後データセット
+    """
+    filtered_label_list = []
+
+    for label in dataset.labels:
+        filtered_obj_list = []
+        for obj in label.objects:
+            if obj.score is not None and obj.score >= score_thres:
+                filtered_obj_list.append(obj)
+        filtered_label_list.append(Label(label.name, filtered_obj_list))
+
+    return CompeDataset(filtered_label_list)
