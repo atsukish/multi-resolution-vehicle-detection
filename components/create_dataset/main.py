@@ -3,75 +3,12 @@ from pathlib import Path
 import shutil
 
 import fire
-from PIL import Image
 from sklearn.model_selection import train_test_split
 
-from src.ann_fmt import Label, load_annotation_json
-from src.yolo_fmt import YoloObject, YoloLabel
+from src.yolo_fmt import YoloLabel
+from src.dataset_util import ann_to_yolo
 
-CLASS_ID = {"car": 0}
-RANDOM_SEED = 42
-
-
-def to_yolo_format(
-    ann_data: list[Label], image_dirpath: Path
-) -> list[YoloLabel]:
-    """YOLOフォーマットに変換
-
-    Args:
-        ann_data (list[Label]): コンペアノテーションデータ
-        image_dirpath (Path): 画像ファイルパス
-
-    Returns:
-        list[YoloLabel]: YOLOアノテーションデータ
-    """
-    label_list = []
-
-    for _, ann in enumerate(ann_data):
-
-        img_filepath = image_dirpath.joinpath(ann.name)
-        img = Image.open(img_filepath)
-        img_width, img_height = img.size
-
-        obj_list = []
-
-        for _, obj in enumerate(ann.objects):
-            cx, cy = obj.bbox_centor()
-            center_x = cx / img_width
-            center_y = cy / img_height
-            width = obj.width / img_width
-            height = obj.height / img_height
-            obj_list.append(
-                YoloObject(
-                    CLASS_ID[obj.class_], center_x, center_y, width, height
-                )
-            )
-
-        label_list.append(YoloLabel(ann.name, obj_list))
-
-    return label_list
-
-
-def split_dataset(
-    yolo_labels: list[YoloLabel], val_size: float = 0.1
-) -> tuple[list[YoloLabel], list[YoloLabel]]:
-    """データセット分割
-
-    Args:
-        yolo_labels (list[YoloLabel]): データセット
-        val_size (float): validationデータセット割合（デフォルト: 0.1）
-
-    Returns:
-        tuple[list[YoloLabel], list[YoloLabel]]: train/valラベルデータセット
-    """
-    train, val = train_test_split(
-        yolo_labels,
-        test_size=val_size,
-        shuffle=True,
-        random_state=RANDOM_SEED,
-    )
-
-    return train, val
+RANDOM_SEED = 101
 
 
 def output_dataset(
@@ -133,14 +70,16 @@ def main(
     if not Path(image_dirpath).is_dir():
         raise FileNotFoundError
 
-    # データセット取得
-    json_data = load_annotation_json(Path(label_filepath))
-
-    # yolo変換
-    yolo_data = to_yolo_format(json_data, Path(image_dirpath))
+    # json to yoloフォーマット
+    yolo_data = ann_to_yolo(Path(label_filepath), Path(image_dirpath))
 
     # データセット分割
-    train, val = split_dataset(yolo_data, val_size)
+    train, val = train, val = train_test_split(
+        yolo_data,
+        test_size=val_size,
+        shuffle=True,
+        random_state=RANDOM_SEED,
+    )
 
     # データセット出力
     output_dataset(
