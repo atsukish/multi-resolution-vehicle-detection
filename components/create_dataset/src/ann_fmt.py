@@ -1,7 +1,7 @@
 """Vehicle Detection in Multi-Resolution Imagesデータセット"""
 from pathlib import Path
 import json
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 
 class Object:
@@ -73,7 +73,7 @@ class Object:
             self.rightbottom_y,
         ]
 
-    def bbox_centor(self) -> tuple[float, float]:
+    def bbox_centor(self) -> Tuple[float, float]:
         """bbox重心座標"""
         return (
             (self.lefttop_x + self.rightbottom_x) / 2,
