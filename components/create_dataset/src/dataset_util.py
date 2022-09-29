@@ -58,7 +58,7 @@ def yolo_to_ann(
     return CompeDataset(label_list)
 
 
-def ann_to_yolo(label_filepath: Path, image_dirpath: Path) -> list[YoloLabel]:
+def ann_to_yolo(label_filepath: Path, image_dirpath: Path) -> List[YoloLabel]:
     """YOLOフォーマットに変換
 
     Args:
@@ -66,7 +66,7 @@ def ann_to_yolo(label_filepath: Path, image_dirpath: Path) -> list[YoloLabel]:
         image_dirpath (Path): 画像ファイルパス
 
     Returns:
-        list[YoloLabel]: YOLOアノテーションデータ
+        List[YoloLabel]: YOLOアノテーションデータ
     """
     ann_data = load_annotation_json(label_filepath)
 

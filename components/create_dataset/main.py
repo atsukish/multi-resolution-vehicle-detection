@@ -1,6 +1,7 @@
 """to yolov5 format"""
 from pathlib import Path
 import shutil
+from typing import List
 
 import fire
 from sklearn.model_selection import train_test_split
@@ -8,16 +9,16 @@ from sklearn.model_selection import train_test_split
 from src.yolo_fmt import YoloLabel
 from src.dataset_util import ann_to_yolo
 
-RANDOM_SEED = 101
+RANDOM_SEED = 42
 
 
 def output_dataset(
-    yolo_labels: list[YoloLabel], image_dir: Path, output_dir: Path
+    yolo_labels: List[YoloLabel], image_dir: Path, output_dir: Path
 ) -> None:
     """データセット出力
 
     Args:
-        yolo_labels (list[YoloLabel]): yolo形式ラベルデータ
+        yolo_labels (List[YoloLabel]): yolo形式ラベルデータ
         image_dir (Path): 画像ディレクトリパス
         output_dir (Path): 出力ディレクトリパス
     """

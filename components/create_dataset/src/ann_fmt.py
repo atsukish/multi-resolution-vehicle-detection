@@ -1,7 +1,7 @@
 """Vehicle Detection in Multi-Resolution Imagesデータセット"""
 from pathlib import Path
 import json
-from typing import Optional
+from typing import Optional, List
 
 
 class Object:
@@ -60,11 +60,11 @@ class Object:
         """bbox高さ"""
         return self.rightbottom_y - self.lefttop_y
 
-    def bbox_xyxy(self) -> list[float]:
+    def bbox_xyxy(self) -> List[float]:
         """xyxy形式
 
         Returns:
-            list[float]: _description_
+            List[float]: _description_
         """
         return [
             self.lefttop_x,
@@ -85,12 +85,12 @@ class Label:
 
     """ラベルクラス"""
 
-    def __init__(self, name: str, objects: list[Object]) -> None:
+    def __init__(self, name: str, objects: List[Object]) -> None:
         """コンストラクタ
 
         Args:
             name (str): 画像ファイル名
-            objects (list[Object]): BBOXオブジェクトリスト
+            objects (List[Object]): BBOXオブジェクトリスト
         """
         self.name = name
         self.objects = objects
@@ -111,11 +111,11 @@ class CompeDataset:
 
     """データセット"""
 
-    def __init__(self, labels: list[Label]) -> None:
+    def __init__(self, labels: List[Label]) -> None:
         """コンストラクタ
 
         Args:
-            labels (list[Label]): _description_
+            labels (List[Label]): _description_
         """
         self.labels = labels
 
@@ -130,14 +130,14 @@ class CompeDataset:
         }
 
 
-def load_annotation_json(filepath: Path) -> list[Label]:
+def load_annotation_json(filepath: Path) -> List[Label]:
     """データセット読み込み
 
     Args:
         filepath (Path): データセットファイルパス
 
     Returns:
-        list[Label]: データセットラベルリスト
+        List[Label]: データセットラベルリスト
     """
     with filepath.open(mode="r") as f:
         json_data = json.load(f)
@@ -161,11 +161,11 @@ def load_annotation_json(filepath: Path) -> list[Label]:
     return img_list
 
 
-def save_annotation_json(label_data: list[Label], filepath: Path) -> None:
+def save_annotation_json(label_data: List[Label], filepath: Path) -> None:
     """アノテーションファイル保存
 
     Args:
-        label_data (list[Label]): ラベルデータ
+        label_data (List[Label]): ラベルデータ
         filepath (Path): 出力ファイルパス
     """
     images = []

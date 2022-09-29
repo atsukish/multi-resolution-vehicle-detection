@@ -1,6 +1,6 @@
 """yoloフォーマット"""
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 
 class YoloObject:
@@ -32,11 +32,11 @@ class YoloObject:
         self.height = height
         self.score = score
 
-    def xyxy(self) -> list[float]:
+    def xyxy(self) -> List[float]:
         """xyxy座標
 
         Returns:
-            list[float]: _description_
+            List[float]: _description_
         """
         return [
             self.x_center - self.width / 2,
@@ -50,21 +50,21 @@ class YoloLabel:
 
     """YOLOラベルフォーマット"""
 
-    def __init__(self, image_name: str, objects: list[YoloObject]) -> None:
+    def __init__(self, image_name: str, objects: List[YoloObject]) -> None:
         """コンストラクタ
 
         Args:
             image_name (str): ファイル名
-            objects (list[YoloObject]): BBOXオブジェクトリスト
+            objects (List[YoloObject]): BBOXオブジェクトリスト
         """
         self.image_name = image_name
         self.objects = objects
 
-    def to_text(self) -> list[str]:
+    def to_text(self) -> List[str]:
         """ラベルテキストフォーマットへ変換
 
         Returns:
-            list[str]: _description_
+            List[str]: _description_
         """
         str_list = []
         for obj in self.objects:
@@ -122,12 +122,12 @@ def load_yolo_format(filepath: Path) -> YoloLabel:
 
 
 def save_yolo_format_txt(
-    label_data: list[YoloLabel], outpur_dirpath: Path
+    label_data: List[YoloLabel], outpur_dirpath: Path
 ) -> None:
     """yoloフォーマット保存
 
     Args:
-        label_data (list[YoloLabel]): ラベルデータ
+        label_data (List[YoloLabel]): ラベルデータ
         outpur_dirpath (Path): ディレクトリパス
     """
     if not outpur_dirpath.exists():
