@@ -5,10 +5,45 @@ from typing import List
 from PIL import Image
 
 from src.ann_fmt import Label, Object, load_annotation_json, CompeDataset
-from src.yolo_fmt import YoloObject, YoloLabel, load_yolo_format
+from src.yolo_fmt import (
+    YoloObject,
+    YoloLabel,
+    load_yolo_format,
+    save_yolo_format_txt,
+)
 
 
 CLASS_ID = {"car": 0}
+
+
+def yolo_score_filter(
+    source_dirpath: Path, output_dirpath: Path, score_threshold: float = 0.50
+) -> None:
+    """YOLOフォーマットスコアフィルタリング
+
+    Args:
+        label_dirpath (Path): 元データラベルパス
+        output_path (Path): フィルタリングラベルパス
+        score_threshold (float, optional): スコア閾値. Defaults to 0.50.
+    """
+    label_list = list(source_dirpath.glob("*.txt"))
+
+    save_label_datalist = []
+
+    for label_path in label_list:
+        yolo_label = load_yolo_format(label_path)
+
+        filtered_obj_list = []
+        for obj in yolo_label.objects:
+            if obj.score < score_threshold:
+                continue
+            filtered_obj_list.append(obj)
+
+        save_label_datalist.append(
+            YoloLabel(yolo_label.image_name, filtered_obj_list)
+        )
+
+    save_yolo_format_txt(save_yolo_format_txt, output_dirpath)
 
 
 def yolo_to_ann(
