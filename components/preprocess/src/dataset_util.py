@@ -43,7 +43,7 @@ def yolo_score_filter(
             YoloLabel(yolo_label.image_name, filtered_obj_list)
         )
 
-    save_yolo_format_txt(save_yolo_format_txt, output_dirpath)
+    save_yolo_format_txt(save_label_datalist, output_dirpath)
 
 
 def yolo_to_ann(
